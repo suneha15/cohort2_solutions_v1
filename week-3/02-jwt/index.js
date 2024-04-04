@@ -18,9 +18,6 @@ const passwordSchema = zod.string().min(6);
  *                        the password does not meet the length requirement.
  */
 
-
-//Verify, decode and generate JWT
-
 function signJwt(username, password)
 {
     const usernameResponse = emailSchema.safeParse(username);
