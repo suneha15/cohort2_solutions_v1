@@ -15,6 +15,24 @@ let numberOfRequestsForUser = {};
 setInterval(() => {
     numberOfRequestsForUser = {};
 }, 1000)
+//numberOfRequestsForUser will set itself to 0 every 1 second
+
+app.use(function(req,res,next){
+  const userId = req.headers["user-id"];
+  
+  if(numberOfRequestsForUser(userId)){
+    numberOfRequestsForUser[userId]++;
+
+    if(numberOfRequestsForUser[userId] > 5){
+      res.status(404).send("no entry")
+    }else{
+      next();
+    }
+  }else{
+    numberOfRequestsForUser[userId] = 1;
+    next();
+  }
+})
 
 app.get('/user', function(req, res) {
   res.status(200).json({ name: 'john' });
@@ -25,3 +43,7 @@ app.post('/user', function(req, res) {
 });
 
 module.exports = app;
+
+app.listen(3000,()=>{
+  console.log("server is listening on port 3000!");
+})
