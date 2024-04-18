@@ -1,5 +1,6 @@
 const express = require("express");
 const jwt = require("jsonwebtoken");
+const mongoose = require("mongoose");
 const jwtPassword = "123456";
 
 const app = express();
@@ -23,6 +24,33 @@ const ALL_USERS = [
 ];
 
 app.use(express.json());
+
+//create a new signup endpoint, where people can signup and from here data(username,password) gets stored in the mongodb database
+
+mongoose.connect("mongodb+srv://suneha15:python%40123@cluster0.qz2qdpw.mongodb.net/usersappnew")
+
+const User = mongoose.model('Users', {name : String, email : String , password : String});
+
+app.post("/signup", async function(req,res){
+  const username = req.body.username;
+  const password = req.body.password;
+  const name = req.body.name;
+
+  const existingUser = await User.findOne({email : username});
+  if(existingUser){
+    return res.status(400).send("Username already exists");
+  }
+  
+  const user = new User({
+    name : name, 
+    email : username,
+    password : password
+  });
+  user.save();
+  res.json({
+    "msg": "user created successfully"
+  })
+})
 
 function userExists(username, password) {
     // write logic to return true or false if this user exists
