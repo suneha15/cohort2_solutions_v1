@@ -43,8 +43,18 @@ function signJwt(username, password) {
  *                    Returns false if the token is invalid, expired, or not verified
  *                    using the secret key.
  */
+
+//3.  - Write a function that takes a jwt as input and returns true if the jwt can be VERIFIED. Return false otherwise
+
 function verifyJwt(token) {
-    // Your code here
+    let ans = true;
+    
+    try{
+        jwt.verify(token,jwtPassword);
+    }catch(e){
+        ans = false;
+    }
+    return ans;
 }
 
 /**
@@ -71,10 +81,10 @@ module.exports = {
   verifyJwt,
   decodeJwt,
   jwtPassword,
-};
+} = require('../');
 
 /*
 ## JWTs
- - Write a function that takes a jwt as input and returns true if the jwt can be VERIFIED. Return false otherewise
+
  - To test, go to the 02-jwt folder and run `npx jest ./tests`
  * /
