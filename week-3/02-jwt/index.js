@@ -1,10 +1,9 @@
 const jwt = require('jsonwebtoken');
-const jwtPassword = 'secret';
 const zod = require("zod");
+const jwtPassword = 'secret';
 
 const emailSchema = zod.string().email();
 const passwordSchema = zod.string().min(6);
-
 
 /**
  * Generates a JWT for a given username and password.
@@ -18,8 +17,10 @@ const passwordSchema = zod.string().min(6);
  *                        the password does not meet the length requirement.
  */
 
-function signJwt(username, password)
-{
+//1. - Write a function that takes in a username and password and returns a JWT token with the username encoded inside an object. Should return null if the username is not a valid email or if the password is less than 6 characters. Try using the zod library here
+
+function signJwt(username, password) {
+
     const usernameResponse = emailSchema.safeParse(username);
     const passwordResponse = passwordSchema.safeParse(password);
 
@@ -29,9 +30,9 @@ function signJwt(username, password)
 
     const signature = jwt.sign({
         username
-    }, jwtPassword);
+    },jwtPassword)
 
-    return signature;
+    return signature
 }
 
 /**
@@ -44,16 +45,7 @@ function signJwt(username, password)
  */
 function verifyJwt(token) {
     // Your code here
-    let ans = true;
-    try{
-        jwt.verify(token,jwtPassword);
-        return true;
-    }catch(e){
-        ans = false;
-    }
-    return ans;
-} 
-//JWT-verified
+}
 
 /**
  * Decodes a JWT to reveal its payload without verifying its authenticity.
@@ -63,14 +55,7 @@ function verifyJwt(token) {
  *                         Returns false if the token is not a valid JWT format.
  */
 function decodeJwt(token) {
-    // return true/false
-
-    const decoded = jwt.decode(token);
-    if(decoded){
-        return true;
-    }else{
-        return false;
-    }
+    // Your code here
 }
 
 
@@ -81,11 +66,10 @@ module.exports = {
   jwtPassword,
 };
 
-
 /*
- ## JWTs
- - Write a function that takes in a username and password and returns a JWT token with the username encoded inside an object. Should return null if the username is not a valid email or if the password is less than 6 characters. Try using the zod library here
+## JWTs
+ 
  - Write a function that takes a jwt as input and returns true if the jwt can be DECODED (not verified). Return false otherwise
  - Write a function that takes a jwt as input and returns true if the jwt can be VERIFIED. Return false otherewise
  - To test, go to the 02-jwt folder and run `npx jest ./tests`
- */
+ * /
