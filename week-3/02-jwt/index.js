@@ -54,10 +54,17 @@ function verifyJwt(token) {
  * @returns {object|false} The decoded payload of the JWT if the token is a valid JWT format.
  *                         Returns false if the token is not a valid JWT format.
  */
-function decodeJwt(token) {
-    // Your code here
-}
 
+//2.  - Write a function that takes a jwt as input and returns true if the jwt can be DECODED (not verified). Return false otherwise
+
+function decodeJwt(token) {
+    const decoded = jwt.decode(token);
+    if(decoded){
+        return true;
+    }else{
+        return false;
+    }
+} 
 
 module.exports = {
   signJwt,
@@ -68,8 +75,6 @@ module.exports = {
 
 /*
 ## JWTs
- 
- - Write a function that takes a jwt as input and returns true if the jwt can be DECODED (not verified). Return false otherwise
  - Write a function that takes a jwt as input and returns true if the jwt can be VERIFIED. Return false otherewise
  - To test, go to the 02-jwt folder and run `npx jest ./tests`
  * /
