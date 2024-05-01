@@ -1,7 +1,7 @@
 const express = require("express");
 const adminMiddleware = require("../middleware/admin");
+const { Admin , Course } = require("../db");
 const router = express.Router();
-const { Admin } = require("../db");
 
 /*a router is a middleware that helps in organizing and managing routes in an application. It allows developers to define multiple routes and their corresponding handlers in separate files or modules, making the codebase more modular and easier to maintain. Routers help in structuring larger applications by breaking them down into smaller, more manageable components.
 */
@@ -26,19 +26,35 @@ router.post('/signup', async (req, res) => {
     res.json({
         msg : "Admin created successfully"
     })
-    
+
 });
 
-router.post('/courses', adminMiddleware, (req, res) => {
+router.post('/courses', adminMiddleware, async (req, res) => {
     // Implement course creation logic
+    
+    const title = req.body.title;
+    const description = req.body.description;
+    const imageLink = req.body.imageLink;
+    const price = req.body.price;
+    
+    //use zod for input validation otherwise user can send you anything in the body other than as defined in readme
+
+    const newCourse = await Course.create({
+        title,
+        description,
+        imageLink,
+        price
+    })
+    console.log(newCourse)
+    res.json({
+        message : "Course created successfully",
+        courseId : newCourse._id
+    })
 });
 
 router.get('/courses', adminMiddleware, (req, res) => {
     // Implement fetching all courses logic
-    console.log("hi suneha");
-    res.json({
-        msg : "hi there"
-    })
+  
 });
 
 module.exports = router;
