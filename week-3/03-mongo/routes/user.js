@@ -28,18 +28,21 @@ router.get('/courses', async (req, res) => {
     })
 });
 
-router.post('/courses/:courseId', userMiddleware, (req, res) => {
+router.post('/courses/:courseId', userMiddleware, async (req, res) => {
     // Implement course purchase logic
     const courseId = req.params.courseId;
     const username = req.headers.username;
-
-    User.updateOne({
-        username : username
-    }, {
-        purchasedCourses : {
-            "$push" : courseId
-        }
-    });
+    try{
+        await User.updateOne({
+            username : username
+        },{
+           "$push" : {
+                purchasedCourses : courseId
+           }
+        })
+    }catch(e){
+        console.log(e)
+    };
     res.json({
         message : "Purchase complete!"
     })
