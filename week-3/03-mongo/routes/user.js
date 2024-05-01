@@ -6,8 +6,8 @@ const userMiddleware = require("../middleware/user");
 // User Routes
 router.post('/signup', async (req, res) => {
     // Implement user signup logic
-    const username = req.headers.username;
-    const password = req.headers.password;
+    const username = req.body.username;
+    const password = req.body.password;
 
     await User.create({
         username : username,
@@ -30,6 +30,19 @@ router.get('/courses', async (req, res) => {
 
 router.post('/courses/:courseId', userMiddleware, (req, res) => {
     // Implement course purchase logic
+    const courseId = req.params.courseId;
+    const username = req.headers.username;
+
+    User.updateOne({
+        username : username
+    }, {
+        purchasedCourses : {
+            "$push" : courseId
+        }
+    });
+    res.json({
+        message : "Purchase complete!"
+    })
 });
 
 router.get('/purchasedCourses', userMiddleware, (req, res) => {
