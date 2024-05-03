@@ -11,9 +11,28 @@
        //document
        const a = document.getElementById("firstNumber").value;
        const b = document.getElementById("secondNumber").value;
+       //const element = document.getElementById("finalSum");
+       //element.innerHTML = parseInt(a) + parseInt(b);
+       //fetch
+       fetch("https://sum-server.100xdevs.com/sum?a=" + a + "&b=" + b)
+            .then(function(response){
+            console.log(response);
+            //here we know that the data we're getting back is text, thus here we use res.text() instead of res.json()
+            response.text()
+                .then(function(ans){
+                    console.log(ans);
+                })
+        });
+        //using async-await syntax
+    async function populateDiv2(){
+        const a = document.getElementById("firstNumber").value;
+        const b = document.getElementById("secondNumber").value;
 
-       const element = document.getElementById("finalSum");
-       element.innerHTML = parseInt(a) + parseInt(b);
+        const response = await  fetch("https://sum-server.100xdevs.com/sum?a=" + a + "&b=" + b);
+        const ans = await response.text(); 
+        // if you use the axios library you get access to response.data() immediately
+        document.getElementById("finalSum").innerHTML = ans;
+    }
     }
 </script>
 <body>
