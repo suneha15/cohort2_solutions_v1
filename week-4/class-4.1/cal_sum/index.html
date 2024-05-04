@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+
+  <script>
+    //debouncing, throttling
+    let timeOut;
+    function debouncePopulateDiv(){
+      //anytime debounce() gets called, clear the old clock that was running & start a new clock
+      clearTimeout(timeOut);
+      timeOut = setTimeout(function(){
+          populateDiv()
+      },1000);
+        
+    }
+
+    function populateDiv() {
+      //document
+      const a = document.getElementById("firstNumber").value;
+
+      const b = document.getElementById("secondNumber").value;
+
+      const element = document.getElementById("finalSum");
+      //fetch
+
+      fetch("https://sum-server.100xdevs.com/sum?a=" + a + "&b=" + b).then(
+        function (response) {
+          console.log(response);
+
+          response.text().then(function (ans) {
+            document.getElementById("finalSum").innerHTML = ans;
+          });
+        }
+      );
+
+      // element.innerHTML = parseInt(a) + parseInt(b);
+      console.log(element);
+      }
+    
+      // using async-await syntax
+      async function populateDiv2() {
+        const a = document.getElementById("firstNumber").value;
+        const b = document.getElementById("secondNumber").value;
+
+        const response = await fetch(
+          "https://sum-server.100xdevs.com/sum?a=" + a + "&b=" + b
+        );
+        const ans = await response.text();
+        // if you use the axios library you get access to response.data() immediately
+        document.getElementById("finalSum").innerHTML = ans;
+
+        //<button onclick="populateDiv()">Calculate Sum</button><br /><br />
+
+      }
+  </script>
+  <body>
+    <input oninput="debouncePopulateDiv()"
+      type="text"
+      placeholder="first number"
+      id="firstNumber"
+    /><br /><br />
+    <input oninput="debouncePopulateDiv()"
+      type="text"
+      placeholder="second number"
+      id="secondNumber"
+    /><br /><br />
+    
+    <div id="finalSum"></div>
+  </body>
+</html>
