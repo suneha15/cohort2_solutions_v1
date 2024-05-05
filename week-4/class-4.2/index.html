@@ -4,13 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <script>
-        let globalId = 1;
 
-        function done(todoId){
-            const parent = document.getElementById(todoId);
-            parent.children[2].innerHTML = "Done!";
-        }
+</head>
+<body>
+    <div>
+        <input id="title" type="text" placeholder="title"><br><br>
+        <input id="description" type="text" placeholder="description"><br><br>
+        <!--<button onclick="addTodo()">Add todo</button><br><br>>-->
+        <div id="container"></div>
+    </div>
+    <script>
+        // let globalId = 1;
 
         function createChild(title,description,id){
             const child = document.createElement("div");
@@ -27,23 +31,38 @@
             child.appendChild(thirdGrandChild);
             return child;
         }
+        //state will always be an array
+        //every element of state will have a title, description & id.
 
-        function addTodo(){
-            const title  = document.getElementById("title").value;
-            const description  = document.getElementById("description").value;
+        function updateDomAccToState(state){
             const parent = document.getElementById("container");
-            parent.appendChild(createChild(title,description,globalId++));
+            parent.innerHTML = "";
+            for(let i=0 ; i< state.length ; i++){
+                const child = createChild(state[i].title, state[i].description,state[i].id)
+                parent.appendChild(child);
+            }
         }
+        //the BE is going to return you the current state as json and you're going to call updateDomAccToState(json) on this state.
+        window.setInterval(async function(){
+            const res =await fetch("https://sum-server.100xdevs.com/todos");
+            const json = await res.json();
+            updateDomAccToState(json.todos);  // react is this function actually
+        },5000);
+       /*
+         updateDomAccToState([{
+            title: "gym",
+            description : "7pm",
+            id : 1
+        },{
+            title: "gym2",
+            description : "7pm",
+            id : 1
+        },{
+            title: "gym3",
+            description : "7pm",
+            id : 1
+        }])
+        */
     </script>
-</head>
-<body>
-    <div>
-        <input id="title" type="text" placeholder="title"><br><br>
-        <input id="description" type="text" placeholder="description"><br><br>
-        <button onclick="addTodo()">Add todo</button><br><br>
-        <div id="container">
-          
-        </div>
-    </div>
 </body>
 </html>
