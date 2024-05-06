@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="buttonParent"></div>
+    <script>
+        //1. initialize state
+        //2. defining the button component 
+        /*
+        Button component should return something like this
+        <button>
+            Counter 2
+        </button>
+        */
+        //3. rerendering
+
+        let state = {
+            count : 0
+        }
+
+        function onButtonPress(){
+            state.count++ //state change
+            buttonComponentRerender(); //state change triggers a rerender
+        }
+
+        function buttonComponentRerender(){
+            document.getElementById("buttonParent").innerHTML = "";
+            const component = buttonComponent(state.count);
+            document.getElementById("buttonParent").appendChild(component);
+        }
+
+        function buttonComponent(count){
+            const button = document.createElement("button");
+            button.innerHTML = `Counter ${count}`;
+            button.setAttribute("onClick",`onButtonPress()`);
+            return button;
+        }
+        buttonComponentRerender();
+    </script>
+</body>
+</html>
