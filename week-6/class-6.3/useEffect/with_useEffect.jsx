@@ -42,6 +42,8 @@ function App(){
         },1000);
     },[])
 
+    //each one of these setTimeOut triggers a re-render and "Hi there" gets logged on the screen, thus you'll see 3 re-renders.
+
     const incomeTax = (bankData.income + exchangeDate.returns) * 0.3;
 
     return(
